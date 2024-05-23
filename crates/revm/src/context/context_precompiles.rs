@@ -66,11 +66,15 @@ impl<DB: Database> ContextPrecompiles<DB> {
     ) -> Option<PrecompileResult> {
         let precompile = self.inner.get_mut(&addess)?;
 
-        match precompile {
+        let result = match precompile {
             ContextPrecompile::Ordinary(p) => Some(p.call(bytes, gas_price, &evmctx.env)),
             ContextPrecompile::ContextStatefulMut(p) => Some(p.call_mut(bytes, gas_price, evmctx)),
             ContextPrecompile::ContextStateful(p) => Some(p.call(bytes, gas_price, evmctx)),
-        }
+        };
+
+        println!("Called precompile {:?}: {:?}", addess, result);
+
+        result
     }
 }
 

@@ -9,7 +9,6 @@
 extern crate alloc as std;
 
 pub mod blake2;
-#[cfg(feature = "blst")]
 pub mod bls12_381;
 pub mod bn128;
 pub mod hash;
@@ -164,7 +163,6 @@ impl Precompiles {
             let precompiles = Self::cancun().clone();
 
             // Don't include BLS12-381 precompiles in no_std builds.
-            #[cfg(feature = "blst")]
             let precompiles = {
                 let mut precompiles = precompiles;
                 precompiles.extend(bls12_381::precompiles());
